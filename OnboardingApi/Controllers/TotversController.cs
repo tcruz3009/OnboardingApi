@@ -8,12 +8,12 @@ using System.Net;
 
 namespace OnboardingApi.Controllers
 {
-	public class CategoriesController : BaseApiController
+	public class TotversController : BaseApiController
 	{
 		private readonly ITotverService _TotverService;
 		private readonly IMapper _mapper;
 
-		public CategoriesController(ITotverService TotverService, IMapper mapper)
+		public TotversController(ITotverService TotverService, IMapper mapper)
 		{
 			_TotverService = TotverService;
 			_mapper = mapper;
@@ -27,8 +27,8 @@ namespace OnboardingApi.Controllers
 		[ProducesResponseType(typeof(IEnumerable<TotverDto>), 200)]
 		public async Task<IEnumerable<TotverDto>> ListAsync()
 		{
-			var categories = await _TotverService.ListAsync();
-			return _mapper.Map<IEnumerable<TotverDto>>(categories);
+			var result = await _TotverService.ListAsync();
+			return _mapper.Map<IEnumerable<TotverDto>>(result);
 		}
 
 		/// <summary>
