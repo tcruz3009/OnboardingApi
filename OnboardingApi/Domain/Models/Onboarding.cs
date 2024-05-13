@@ -6,11 +6,11 @@ namespace OnboardingApi.Domain.Models
     public class Onboarding : BaseEntity
     {
         [Required]
-        public int PadrinhoId { get; set; }
+        public Guid PadrinhoId { get; set; }
         [Required]
         public required Totver Padrinho { get; set; }
         [Required]
-        public int NovoTotverId { get; set; }
+        public Guid NovoTotverId { get; set; }
         [Required]
         public required Totver NovoTotver { get; set; }
 
