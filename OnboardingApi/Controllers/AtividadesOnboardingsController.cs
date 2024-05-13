@@ -12,9 +12,9 @@ namespace OnboardingApi.Controllers
 	{
 
     /// <summary>
-    /// Lists all categories.
+    /// Lists all AtividadeOnboarding.
     /// </summary>
-    /// <returns>List os categories.</returns>
+    /// <returns>List of AtividadeOnboardings.</returns>
     [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<AtividadeOnboardingDto>), 200)]
 		public async Task<IEnumerable<AtividadeOnboardingDto>> ListAsync()

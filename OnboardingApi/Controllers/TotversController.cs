@@ -12,9 +12,9 @@ namespace OnboardingApi.Controllers
 	{
 
     /// <summary>
-    /// Lists all categories.
+    /// Lists all Totver.
     /// </summary>
-    /// <returns>List os categories.</returns>
+    /// <returns>List of Totvers.</returns>
     [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<TotverDto>), 200)]
 		public async Task<IEnumerable<TotverDto>> ListAsync()
