@@ -12,15 +12,11 @@ namespace OnboardingApi.Mapping
     {
       CreateMap<Totver, TotverDto>();
 
-      CreateMap<QueryResult<Atividade>, QueryResultList<AtividadeDto>>();
+      CreateMap<Atividade, AtividadeDto>();
 
-      CreateMap<Onboarding, OnboardingDto>()
-                .ForMember(src => src.StatusOnboarding,
-                           opt => opt.MapFrom(src => src.StatusOnboarding.ToDescriptionString()));
+      CreateMap<Onboarding, OnboardingDto>();
 
-      CreateMap<AtividadeOnboarding, AtividadeOnboardingDto>()
-                .ForMember(src => src.StatusAtividade,
-                           opt => opt.MapFrom(src => src.StatusAtividade.ToDescriptionString()));
+      CreateMap<AtividadeOnboarding, AtividadeOnboardingDto>();
     }
   }
 }

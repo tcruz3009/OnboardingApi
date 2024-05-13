@@ -28,12 +28,12 @@ namespace OnboardingApi.Domain.Services.Communication
 
   public class ErrorMessage
   {
-    public string code { get; set; }
-    public string type { get; set; }
-    public string message { get; set; }
-    public string detailedMessage { get; set; }
-    public string helpUrl { get; set; }
-    public List<Response> details { get; set; }
+    public string? code { get; set; }
+    public string? type { get; set; }
+    public string? message { get; set; }
+    public string? detailedMessage { get; set; }
+    public string? helpUrl { get; set; }
+    public List<Response>? details { get; set; }
   }
 
   public class ErrorType

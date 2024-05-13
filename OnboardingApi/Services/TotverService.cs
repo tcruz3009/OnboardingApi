@@ -7,79 +7,65 @@ using OnboardingApi.Infrastructure;
 
 namespace OnboardingApi.Services
 {
-  public class TotverService : ITotverService
+  public class TotverService(
+    ITotverRepository repository,
+    IUnitOfWork unitOfWork,
+    IMemoryCache cache,
+    ILogger<TotverService> logger
+    ) : ITotverService
   {
-    private readonly ITotverRepository _repository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMemoryCache _cache;
-    private readonly ILogger<TotverService> _logger;
-
-    public TotverService
-    (
-      ITotverRepository repository,
-      IUnitOfWork unitOfWork,
-      IMemoryCache cache,
-      ILogger<TotverService> logger
-    )
-    {
-      _repository = repository;
-      _unitOfWork = unitOfWork;
-      _cache = cache;
-      _logger = logger;
-    }
-
     public async Task<IEnumerable<Totver>> ListAsync()
     {
-      var result = await _cache.GetOrCreateAsync(CacheKeys.TotversList, (entry) =>
+      var result = await cache.GetOrCreateAsync(CacheKeys.TotversList, (entry) =>
       {
         entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
-        return _repository.ListAsync();
+        return repository.ListAsync();
       });
 
-      return result ?? new List<Totver>();
+      return result ?? [];
     }
 
-    public async Task<Response<Totver>> SaveAsync(Totver Totver)
+    public async Task<Response<Totver>> SaveAsync(Totver totver)
     {
       try
       {
-        await _repository.AddAsync(Totver);
-        await _unitOfWork.CompleteAsync();
+        await repository.AddAsync(totver);
+        await unitOfWork.CompleteAsync();
 
-        return new Response<Totver>(Totver);
+        return new Response<Totver>(totver);
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, $"Não foi possivel salvar o registro. Erro: {ex.Message}");
+        logger.LogError("{message}", $"Não foi possivel salvar o registro. Erro: {ex.Message}");
         return new Response<Totver>(ErrorType.Error, "Um erro ocorreu tentando salvar o registro.", ex.Message);
       }
     }
 
-    public async Task<Response<Totver>> UpdateAsync(int id, Totver Totver)
+    public async Task<Response<Totver>> UpdateAsync(Guid id, Totver totver)
     {
-      var existingTotver = await _repository.GetByIdAsync(id);
+      var existingTotver = await repository.GetByIdAsync(id);
       if (existingTotver == null)
       {
         return new Response<Totver>(ErrorType.Error, "Registro não encontrado.");
       }
 
-      existingTotver = Totver;
+      existingTotver = totver;
 
       try
       {
-        await _unitOfWork.CompleteAsync();
+        await unitOfWork.CompleteAsync();
         return new Response<Totver>(existingTotver);
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, $"Não foi possivel atualizar o registro com o ID {id}. Erro: {ex.Message}");
+        logger.LogError("{message}", $"Não foi possivel atualizar o registro com o ID {id}. Erro: {ex.Message}");
         return new Response<Totver>(ErrorType.Error, "Um erro ocorreu tentando atualizar o registro.", ex.Message);
       }
     }
 
-    public async Task<Response<Totver>> DeleteAsync(int id)
+    public async Task<Response<Totver>> DeleteAsync(Guid id)
     {
-      var existingTotver = await _repository.GetByIdAsync(id);
+      var existingTotver = await repository.GetByIdAsync(id);
       if (existingTotver == null)
       {
         return new Response<Totver>(ErrorType.Error, "Registro não encontrado.");
@@ -87,14 +73,14 @@ namespace OnboardingApi.Services
 
       try
       {
-        _repository.Remove(existingTotver);
-        await _unitOfWork.CompleteAsync();
+        repository.Remove(existingTotver);
+        await unitOfWork.CompleteAsync();
 
         return new Response<Totver>(existingTotver);
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, $"Não foi possivel  excluir o registro com o ID {id}. Erro: {ex.Message}");
+        logger.LogError("{message}", $"Não foi possivel  excluir o registro com o ID {id}. Erro: {ex.Message}");
         return new Response<Totver>(ErrorType.Error, "Um erro ocorreu tentando excluir o registro.", ex.Message);
       }
     }

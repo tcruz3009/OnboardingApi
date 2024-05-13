@@ -10,7 +10,7 @@ namespace OnboardingApi.Persistence.Repositories
     public async Task<IEnumerable<Totver>> ListAsync() 
       => await _context.Totvers.AsNoTracking().ToListAsync();
 
-    public async Task<Totver?> GetByIdAsync(int id)
+    public async Task<Totver?> GetByIdAsync(Guid id)
       => await _context.Totvers.FindAsync(id);
 
     public async Task AddAsync(Totver totver) 

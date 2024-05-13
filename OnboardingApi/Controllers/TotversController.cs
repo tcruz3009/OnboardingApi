@@ -8,27 +8,19 @@ using System.Net;
 
 namespace OnboardingApi.Controllers
 {
-	public class TotversController : BaseApiController
+	public class TotversController(ITotverService TotverService, IMapper mapper) : BaseApiController
 	{
-		private readonly ITotverService _TotverService;
-		private readonly IMapper _mapper;
 
-		public TotversController(ITotverService TotverService, IMapper mapper)
-		{
-			_TotverService = TotverService;
-			_mapper = mapper;
-		}
-
-		/// <summary>
-		/// Lists all categories.
-		/// </summary>
-		/// <returns>List os categories.</returns>
-		[HttpGet]
+    /// <summary>
+    /// Lists all categories.
+    /// </summary>
+    /// <returns>List os categories.</returns>
+    [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<TotverDto>), 200)]
 		public async Task<IEnumerable<TotverDto>> ListAsync()
 		{
-			var result = await _TotverService.ListAsync();
-			return _mapper.Map<IEnumerable<TotverDto>>(result);
+			var result = await TotverService.ListAsync();
+			return mapper.Map<IEnumerable<TotverDto>>(result);
 		}
 
 		/// <summary>
@@ -41,8 +33,8 @@ namespace OnboardingApi.Controllers
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
 		public async Task<IActionResult> PostAsync([FromBody] TotverDto resource)
 		{
-			var entity = _mapper.Map<Totver>(resource);
-			var result = await _TotverService.SaveAsync(entity);
+			var entity = mapper.Map<Totver>(resource);
+			var result = await TotverService.SaveAsync(entity);
 
 			if (result._message != null)
 			{
@@ -50,7 +42,7 @@ namespace OnboardingApi.Controllers
 				return BadRequest(result._message);
 			}
 
-			var data = _mapper.Map<TotverDto>(result.Data!);
+			var data = mapper.Map<TotverDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -63,10 +55,10 @@ namespace OnboardingApi.Controllers
 		[HttpPut("{id}")]
 		[ProducesResponseType(typeof(TotverDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> PutAsync(int id, [FromBody] TotverDto resource)
+		public async Task<IActionResult> PutAsync(Guid id, [FromBody] TotverDto resource)
 		{
-			var totver = _mapper.Map<Totver>(resource);
-			var result = await _TotverService.UpdateAsync(id, totver);
+			var totver = mapper.Map<Totver>(resource);
+			var result = await TotverService.UpdateAsync(id, totver);
 
       if (result._message != null)
       {
@@ -74,7 +66,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<TotverDto>(result.Data!);
+      var data = mapper.Map<TotverDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -86,9 +78,9 @@ namespace OnboardingApi.Controllers
 		[HttpDelete("{id}")]
 		[ProducesResponseType(typeof(TotverDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> DeleteAsync(int id)
+		public async Task<IActionResult> DeleteAsync(Guid id)
 		{
-			var result = await _TotverService.DeleteAsync(id);
+			var result = await TotverService.DeleteAsync(id);
 
       if (result._message != null)
       {
@@ -96,7 +88,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<TotverDto>(result.Data!);
+      var data = mapper.Map<TotverDto>(result.Data!);
 			return Ok(data);
 		}
 	}

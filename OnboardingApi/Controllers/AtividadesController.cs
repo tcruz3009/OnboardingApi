@@ -8,27 +8,19 @@ using System.Net;
 
 namespace OnboardingApi.Controllers
 {
-	public class AtividadesController : BaseApiController
+	public class AtividadesController(IAtividadeService AtividadeService, IMapper mapper) : BaseApiController
 	{
-		private readonly IAtividadeService _AtividadeService;
-		private readonly IMapper _mapper;
 
-		public AtividadesController(IAtividadeService AtividadeService, IMapper mapper)
-		{
-			_AtividadeService = AtividadeService;
-			_mapper = mapper;
-		}
-
-		/// <summary>
-		/// Lists all categories.
-		/// </summary>
-		/// <returns>List os categories.</returns>
-		[HttpGet]
+    /// <summary>
+    /// Lists all categories.
+    /// </summary>
+    /// <returns>List os categories.</returns>
+    [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<AtividadeDto>), 200)]
 		public async Task<IEnumerable<AtividadeDto>> ListAsync()
 		{
-			var result = await _AtividadeService.ListAsync();
-			return _mapper.Map<IEnumerable<AtividadeDto>>(result);
+			var result = await AtividadeService.ListAsync();
+			return mapper.Map<IEnumerable<AtividadeDto>>(result);
 		}
 
 		/// <summary>
@@ -41,8 +33,8 @@ namespace OnboardingApi.Controllers
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
 		public async Task<IActionResult> PostAsync([FromBody] AtividadeDto resource)
 		{
-			var entity = _mapper.Map<Atividade>(resource);
-			var result = await _AtividadeService.SaveAsync(entity);
+			var entity = mapper.Map<Atividade>(resource);
+			var result = await AtividadeService.SaveAsync(entity);
 
 			if (result._message != null)
 			{
@@ -50,7 +42,7 @@ namespace OnboardingApi.Controllers
 				return BadRequest(result._message);
 			}
 
-			var data = _mapper.Map<AtividadeDto>(result.Data!);
+			var data = mapper.Map<AtividadeDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -63,10 +55,10 @@ namespace OnboardingApi.Controllers
 		[HttpPut("{id}")]
 		[ProducesResponseType(typeof(AtividadeDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> PutAsync(int id, [FromBody] AtividadeDto resource)
+		public async Task<IActionResult> PutAsync(Guid id, [FromBody] AtividadeDto resource)
 		{
-			var Atividade = _mapper.Map<Atividade>(resource);
-			var result = await _AtividadeService.UpdateAsync(id, Atividade);
+			var Atividade = mapper.Map<Atividade>(resource);
+			var result = await AtividadeService.UpdateAsync(id, Atividade);
 
       if (result._message != null)
       {
@@ -74,7 +66,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<AtividadeDto>(result.Data!);
+      var data = mapper.Map<AtividadeDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -86,9 +78,9 @@ namespace OnboardingApi.Controllers
 		[HttpDelete("{id}")]
 		[ProducesResponseType(typeof(AtividadeDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> DeleteAsync(int id)
+		public async Task<IActionResult> DeleteAsync(Guid id)
 		{
-			var result = await _AtividadeService.DeleteAsync(id);
+			var result = await AtividadeService.DeleteAsync(id);
 
       if (result._message != null)
       {
@@ -96,7 +88,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<AtividadeDto>(result.Data!);
+      var data = mapper.Map<AtividadeDto>(result.Data!);
 			return Ok(data);
 		}
 	}

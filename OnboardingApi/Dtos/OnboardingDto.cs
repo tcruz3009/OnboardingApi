@@ -1,17 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using OnboardingApi.Domain.Enums;
+using OnboardingApi.Dtos;
 
 namespace OnboardingApi.Domain.Dtos
 {
-  public class OnboardingDto
+  public class OnboardingDto : BaseDto
   {
-    public int? Id { get; set; }
 
     [Required(ErrorMessage = "O padrinho do onboarding é Obrigatório")]
-    public int PadrinhoId { get; set; }
+    public Guid PadrinhoId { get; set; }
 
     [Required(ErrorMessage = "O Apadrinhado (novo TOTVER) do onboarding é Obrigatório")]
-    public int NovoTotverId { get; set; }
+    public Guid NovoTotverId { get; set; }
 
     public StatusEnum StatusOnboarding { get; set; } = StatusEnum.NaoIniciado;
 

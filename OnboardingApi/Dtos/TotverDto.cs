@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using OnboardingApi.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnboardingApi.Domain.Dtos
 {
-  public record TotverDto
+  public class TotverDto : BaseDto
   {
-    public int? Id { get; set; }
+
+    public bool Ativo { get; set; } = true;
 
     [Required(ErrorMessage = "Nome é Obrigatório")]
     [MinLength(3, ErrorMessage = "Tamanho mínimo do nome são 3 caracteres")]

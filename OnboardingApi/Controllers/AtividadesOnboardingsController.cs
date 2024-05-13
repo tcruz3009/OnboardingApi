@@ -8,27 +8,19 @@ using System.Net;
 
 namespace OnboardingApi.Controllers
 {
-	public class AtividadesOnboardingsController : BaseApiController
+	public class AtividadesOnboardingsController(IAtividadeOnboardingService AtividadeOnboardingService, IMapper mapper) : BaseApiController
 	{
-		private readonly IAtividadeOnboardingService _AtividadeOnboardingService;
-		private readonly IMapper _mapper;
 
-		public AtividadesOnboardingsController(IAtividadeOnboardingService AtividadeOnboardingService, IMapper mapper)
-		{
-			_AtividadeOnboardingService = AtividadeOnboardingService;
-			_mapper = mapper;
-		}
-
-		/// <summary>
-		/// Lists all categories.
-		/// </summary>
-		/// <returns>List os categories.</returns>
-		[HttpGet]
+    /// <summary>
+    /// Lists all categories.
+    /// </summary>
+    /// <returns>List os categories.</returns>
+    [HttpGet]
 		[ProducesResponseType(typeof(IEnumerable<AtividadeOnboardingDto>), 200)]
 		public async Task<IEnumerable<AtividadeOnboardingDto>> ListAsync()
 		{
-			var result = await _AtividadeOnboardingService.ListAsync();
-			return _mapper.Map<IEnumerable<AtividadeOnboardingDto>>(result);
+			var result = await AtividadeOnboardingService.ListAsync();
+			return mapper.Map<IEnumerable<AtividadeOnboardingDto>>(result);
 		}
 
 		/// <summary>
@@ -41,8 +33,8 @@ namespace OnboardingApi.Controllers
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
 		public async Task<IActionResult> PostAsync([FromBody] AtividadeOnboardingDto resource)
 		{
-			var entity = _mapper.Map<AtividadeOnboarding>(resource);
-			var result = await _AtividadeOnboardingService.SaveAsync(entity);
+			var entity = mapper.Map<AtividadeOnboarding>(resource);
+			var result = await AtividadeOnboardingService.SaveAsync(entity);
 
 			if (result._message != null)
 			{
@@ -50,7 +42,7 @@ namespace OnboardingApi.Controllers
 				return BadRequest(result._message);
 			}
 
-			var data = _mapper.Map<AtividadeOnboardingDto>(result.Data!);
+			var data = mapper.Map<AtividadeOnboardingDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -63,10 +55,10 @@ namespace OnboardingApi.Controllers
 		[HttpPut("{id}")]
 		[ProducesResponseType(typeof(AtividadeOnboardingDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> PutAsync(int id, [FromBody] AtividadeOnboardingDto resource)
+		public async Task<IActionResult> PutAsync(Guid id, [FromBody] AtividadeOnboardingDto resource)
 		{
-			var AtividadeOnboarding = _mapper.Map<AtividadeOnboarding>(resource);
-			var result = await _AtividadeOnboardingService.UpdateAsync(id, AtividadeOnboarding);
+			var AtividadeOnboarding = mapper.Map<AtividadeOnboarding>(resource);
+			var result = await AtividadeOnboardingService.UpdateAsync(id, AtividadeOnboarding);
 
       if (result._message != null)
       {
@@ -74,7 +66,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<AtividadeOnboardingDto>(result.Data!);
+      var data = mapper.Map<AtividadeOnboardingDto>(result.Data!);
 			return Ok(data);
 		}
 
@@ -86,9 +78,9 @@ namespace OnboardingApi.Controllers
 		[HttpDelete("{id}")]
 		[ProducesResponseType(typeof(AtividadeOnboardingDto), 200)]
 		[ProducesResponseType(typeof(ErrorMessage), 400)]
-		public async Task<IActionResult> DeleteAsync(int id)
+		public async Task<IActionResult> DeleteAsync(Guid id)
 		{
-			var result = await _AtividadeOnboardingService.DeleteAsync(id);
+			var result = await AtividadeOnboardingService.DeleteAsync(id);
 
       if (result._message != null)
       {
@@ -96,7 +88,7 @@ namespace OnboardingApi.Controllers
         return BadRequest(result._message);
       }
 
-      var data = _mapper.Map<AtividadeOnboardingDto>(result.Data!);
+      var data = mapper.Map<AtividadeOnboardingDto>(result.Data!);
 			return Ok(data);
 		}
 	}

@@ -9,18 +9,18 @@ using OnboardingApi.Persistence.Context;
 
 #nullable disable
 
-namespace OnboardingApi.Persistence.Migrations
+namespace OnboardingApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240513042623_ultimas_alteracoes")]
-    partial class ultimas_alteracoes
+    [Migration("20240513214944_initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.18")
+                .HasAnnotation("ProductVersion", "8.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -32,7 +32,6 @@ namespace OnboardingApi.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AlteradoPor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Ativo")
@@ -59,10 +58,7 @@ namespace OnboardingApi.Persistence.Migrations
                     b.Property<bool>("Obrigatório")
                         .HasColumnType("bit");
 
-                    b.Property<TimeSpan?>("TempoEstimado")
-                        .HasColumnType("time");
-
-                    b.Property<DateTime>("UltimaAlteracao")
+                    b.Property<DateTime?>("UltimaAlteracao")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -78,11 +74,24 @@ namespace OnboardingApi.Persistence.Migrations
                     b.Property<Guid>("AtividadeId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AlteradoPor")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Comentário")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CriadoPor")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("StatusAtividade")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("UltimaAlteracao")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("OnboardingId", "AtividadeId");
 
@@ -98,7 +107,6 @@ namespace OnboardingApi.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AlteradoPor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CriadoPor")
@@ -117,7 +125,7 @@ namespace OnboardingApi.Persistence.Migrations
                     b.Property<int>("StatusOnboarding")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("UltimaAlteracao")
+                    b.Property<DateTime?>("UltimaAlteracao")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -136,8 +144,10 @@ namespace OnboardingApi.Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("AlteradoPor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
 
                     b.Property<string>("CriadoPor")
                         .IsRequired()
@@ -162,7 +172,7 @@ namespace OnboardingApi.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UltimaAlteracao")
+                    b.Property<DateTime?>("UltimaAlteracao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UsuarioRede")

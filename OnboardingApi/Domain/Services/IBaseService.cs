@@ -6,7 +6,7 @@ namespace OnboardingApi.Domain.Services
   {
     Task<IEnumerable<T>> ListAsync();
     Task<Response<T>> SaveAsync(T category);
-    Task<Response<T>> UpdateAsync(int id, T category);
-    Task<Response<T>> DeleteAsync(int id);
+    Task<Response<T>> UpdateAsync(Guid id, T category);
+    Task<Response<T>> DeleteAsync(Guid id);
   }
 }

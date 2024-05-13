@@ -11,8 +11,7 @@ namespace OnboardingApi.Domain.Models
         [Required]
         public required bool Obrigatório { get; set; }
         public string? ComoFazer { get; set; }
-
-        public TimeSpan? TempoEstimado { get; set; }
+        public int TempoEstimado { get; set; }
         [Required]
         public required string Classificacao { get; set; }
 

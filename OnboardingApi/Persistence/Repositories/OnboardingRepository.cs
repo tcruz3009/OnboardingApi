@@ -12,7 +12,7 @@ namespace OnboardingApi.Persistence.Repositories
     public async Task<IEnumerable<Onboarding>> ListAsync() 
       => await _context.Onboardings.AsNoTracking().ToListAsync();
 
-    public async Task<Onboarding?> GetByIdAsync(int id)
+    public async Task<Onboarding?> GetByIdAsync(Guid id)
       => await _context.Onboardings.FindAsync(id);
 
     public async Task AddAsync(Onboarding entity) 

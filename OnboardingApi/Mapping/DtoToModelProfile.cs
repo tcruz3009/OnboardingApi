@@ -13,11 +13,9 @@ namespace OnboardingApi.Mapping
 
       CreateMap<AtividadeDto, Atividade>();
 
-      CreateMap<OnboardingDto, Onboarding>()
-        .ForMember(src => src.StatusOnboarding, opt => opt.MapFrom(src => (StatusEnum)src.StatusOnboarding));
+			CreateMap<OnboardingDto, Onboarding>();
 
-      CreateMap<AtividadeOnboardingDto, AtividadeOnboarding>()
-				.ForMember(src => src.StatusAtividade, opt => opt.MapFrom(src => (StatusEnum)src.StatusAtividade));
+			CreateMap<AtividadeOnboardingDto, AtividadeOnboarding>();
 			
 			
 		}
