@@ -18,7 +18,7 @@ namespace OnboardingApi.Services
     {
       var result = await cache.GetOrCreateAsync(CacheKeys.OnboardingsList, (entry) =>
       {
-        entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(1);
+        entry.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(5);
         return repository.ListAsync();
       });
 
